@@ -220,59 +220,68 @@
       height: 20px;
     }
 
-    .mark-state {
+    .morph-glyph {
       position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      opacity: 0;
-      transform: scale(.65);
-      will-change: opacity, transform;
-    }
-
-    .mark-state--dot { animation: mark-dot 6s var(--ease) infinite; }
-    .mark-state--o { animation: mark-o 6s var(--ease) infinite; }
-    .mark-state--d { animation: mark-d 6s var(--ease) infinite; }
-    .mark-state--odd { animation: mark-odd 6s var(--ease) infinite; }
-
-    .mark-state--dot::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--paper);
-    }
-
-    .mark-glyph {
-      display: block;
+      top: 2px;
       width: 16px;
       height: 16px;
       background: var(--paper);
+      will-change: transform, border-radius;
     }
 
-    .mark-glyph--o { border-radius: 50%; }
-    .mark-glyph--d { border-radius: 0 50% 50% 0; }
-
-    @keyframes mark-dot {
-      0%, 13%, 92%, 100% { opacity: 1; transform: scale(1); }
-      18%, 87% { opacity: 0; transform: scale(.65); }
+    .morph-glyph--primary {
+      left: 1px;
+      transform-origin: center;
+      animation: morph-primary 6s cubic-bezier(.65, 0, .35, 1) infinite;
     }
 
-    @keyframes mark-o {
-      0%, 15%, 39%, 100% { opacity: 0; transform: scale(.65); }
-      21%, 33% { opacity: 1; transform: scale(1); }
+    .morph-glyph--second {
+      left: 19px;
+      border-radius: 0 50% 50% 0;
+      transform-origin: left center;
+      animation: morph-second 6s cubic-bezier(.65, 0, .35, 1) infinite;
     }
 
-    @keyframes mark-d {
-      0%, 36%, 63%, 100% { opacity: 0; transform: scale(.65); }
-      43%, 57% { opacity: 1; transform: scale(1); }
+    .morph-glyph--third {
+      left: 37px;
+      border-radius: 0 50% 50% 0;
+      transform-origin: left center;
+      animation: morph-third 6s cubic-bezier(.65, 0, .35, 1) infinite;
     }
 
-    @keyframes mark-odd {
-      0%, 60%, 89%, 100% { opacity: 0; transform: scale(.65); }
-      67%, 83% { opacity: 1; transform: scale(1); }
+    @keyframes morph-primary {
+      0%, 8% {
+        border-radius: 50%;
+        transform: translateX(18px) scale(.3125);
+      }
+      23%, 32% {
+        border-radius: 50%;
+        transform: translateX(18px) scale(1);
+      }
+      47%, 57% {
+        border-radius: 0 50% 50% 0;
+        transform: translateX(18px) scale(1);
+      }
+      72%, 83% {
+        border-radius: 50%;
+        transform: translateX(0) scale(1);
+      }
+      100% {
+        border-radius: 50%;
+        transform: translateX(18px) scale(.3125);
+      }
+    }
+
+    @keyframes morph-second {
+      0%, 57% { transform: scaleX(0); }
+      72%, 83% { transform: scaleX(1); }
+      100% { transform: scaleX(0); }
+    }
+
+    @keyframes morph-third {
+      0%, 57% { transform: translateX(-18px) scaleX(0); }
+      72%, 83% { transform: translateX(0) scaleX(1); }
+      100% { transform: translateX(-18px) scaleX(0); }
     }
 
     @keyframes reveal {
@@ -385,18 +394,9 @@
     <footer class="footer">
       <span class="footer-word">Site under construction</span>
       <span class="footer-mark" aria-hidden="true">
-        <span class="mark-state mark-state--dot"></span>
-        <span class="mark-state mark-state--o">
-          <i class="mark-glyph mark-glyph--o"></i>
-        </span>
-        <span class="mark-state mark-state--d">
-          <i class="mark-glyph mark-glyph--d"></i>
-        </span>
-        <span class="mark-state mark-state--odd">
-          <i class="mark-glyph mark-glyph--o"></i>
-          <i class="mark-glyph mark-glyph--d"></i>
-          <i class="mark-glyph mark-glyph--d"></i>
-        </span>
+        <i class="morph-glyph morph-glyph--primary"></i>
+        <i class="morph-glyph morph-glyph--second"></i>
+        <i class="morph-glyph morph-glyph--third"></i>
       </span>
       <span>© <span id="year">2026</span> ODDWISE</span>
     </footer>
