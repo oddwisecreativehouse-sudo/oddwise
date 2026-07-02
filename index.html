@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090909">
+  <meta name="description" content="ODDWISE — We turn the odds in your favor. Coming soon.">
+  <title>ODDWISE — Coming Soon</title>
+  <link rel="icon" type="image/jpeg" href="assets/oddwise-logo.jpeg">
+  <style>
+    :root {
+      --ink: #090909;
+      --paper: #f0eee8;
+      --muted: #96948e;
+      --line: rgba(240, 238, 232, 0.18);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--paper);
+      background: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; }
+
+    .page {
+      position: relative;
+      min-height: 100svh;
+      isolation: isolate;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 30px 42px 28px;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      width: min(57vw, 920px);
+      aspect-ratio: 1;
+      right: -15vw;
+      top: 50%;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      transform: translate3d(var(--orb-x, 0), calc(-50% + var(--orb-y, 0)), 0);
+      transition: transform 1.4s var(--ease);
+      z-index: -1;
+    }
+
+    .topbar,
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: .24em;
+    }
+
+    .topbar {
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--line);
+      opacity: 0;
+      animation: reveal .9s .1s var(--ease) forwards;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--paper);
+      box-shadow: 0 0 0 0 rgba(240, 238, 232, .38);
+      animation: pulse 2.4s infinite;
+    }
+
+    .topbar-index { color: var(--muted); }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .54fr);
+      align-items: center;
+      min-height: 0;
+      padding: clamp(58px, 9vh, 120px) 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 950px;
+    }
+
+    .eyebrow {
+      margin: 0 0 clamp(28px, 5vh, 60px);
+      color: var(--muted);
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: .34em;
+      opacity: 0;
+      animation: reveal 1s .25s var(--ease) forwards;
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 400;
+      font-size: clamp(68px, 10.8vw, 176px);
+      line-height: .78;
+      letter-spacing: -.075em;
+      text-transform: uppercase;
+    }
+
+    h1 span {
+      display: block;
+      opacity: 0;
+      transform: translateY(70px);
+      animation: title-in 1.25s var(--ease) forwards;
+    }
+
+    h1 span:first-child { animation-delay: .32s; }
+    h1 span:last-child {
+      margin-left: clamp(38px, 10vw, 170px);
+      color: transparent;
+      -webkit-text-stroke: 1px var(--paper);
+      animation-delay: .45s;
+    }
+
+    .intro {
+      width: min(100%, 420px);
+      margin: clamp(42px, 7vh, 78px) 0 0 clamp(40px, 10vw, 170px);
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+      color: #c4c1ba;
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.7;
+      letter-spacing: .02em;
+      opacity: 0;
+      animation: reveal 1s .8s var(--ease) forwards;
+    }
+
+    .intro::before {
+      content: "";
+      flex: 0 0 34px;
+      height: 1px;
+      margin-top: .8em;
+      background: var(--paper);
+    }
+
+    .brand-panel {
+      position: relative;
+      z-index: 3;
+      justify-self: end;
+      width: min(100%, 530px);
+      padding: clamp(42px, 4.5vw, 68px) clamp(28px, 3.2vw, 48px);
+      color: var(--ink);
+      background: #fff;
+      border-radius: 50% 0 0 50%;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(50px);
+      animation: panel-in 1.2s .65s var(--ease) forwards;
+    }
+
+    .logo-crop {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1.68;
+      overflow: hidden;
+    }
+
+    .logo-crop img {
+      position: absolute;
+      left: 0;
+      top: -12%;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .coordinates {
+      margin-top: 20px;
+      margin-left: clamp(28px, 7vw, 72px);
+      padding-top: 18px;
+      border-top: 1px solid rgba(9, 9, 9, .2);
+      display: flex;
+      justify-content: space-between;
+      color: rgba(9, 9, 9, .58);
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .footer {
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      opacity: 0;
+      animation: reveal .9s 1s var(--ease) forwards;
+    }
+
+    .footer-word { color: var(--muted); }
+
+    .footer-mark {
+      position: relative;
+      flex: 0 0 54px;
+      width: 54px;
+      height: 20px;
+    }
+
+    .mark-state {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      opacity: 0;
+      transform: scale(.65);
+      will-change: opacity, transform;
+    }
+
+    .mark-state--dot { animation: mark-dot 6s var(--ease) infinite; }
+    .mark-state--o { animation: mark-o 6s var(--ease) infinite; }
+    .mark-state--d { animation: mark-d 6s var(--ease) infinite; }
+    .mark-state--odd { animation: mark-odd 6s var(--ease) infinite; }
+
+    .mark-state--dot::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--paper);
+    }
+
+    .mark-glyph {
+      display: block;
+      width: 16px;
+      height: 16px;
+      background: var(--paper);
+    }
+
+    .mark-glyph--o { border-radius: 50%; }
+    .mark-glyph--d { border-radius: 0 50% 50% 0; }
+
+    @keyframes mark-dot {
+      0%, 13%, 92%, 100% { opacity: 1; transform: scale(1); }
+      18%, 87% { opacity: 0; transform: scale(.65); }
+    }
+
+    @keyframes mark-o {
+      0%, 15%, 39%, 100% { opacity: 0; transform: scale(.65); }
+      21%, 33% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes mark-d {
+      0%, 36%, 63%, 100% { opacity: 0; transform: scale(.65); }
+      43%, 57% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes mark-odd {
+      0%, 60%, 89%, 100% { opacity: 0; transform: scale(.65); }
+      67%, 83% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes reveal {
+      to { opacity: 1; }
+    }
+
+    @keyframes title-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes panel-in {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      65% { box-shadow: 0 0 0 8px rgba(240, 238, 232, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(240, 238, 232, 0); }
+    }
+
+    @media (max-width: 900px) {
+      .page { padding: 24px 24px 22px; }
+
+      .page::before {
+        width: 95vw;
+        right: -52vw;
+        top: 35%;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+        align-content: center;
+        padding: 54px 0 42px;
+      }
+
+      h1 { font-size: clamp(64px, 18vw, 126px); }
+
+      h1 span:last-child { margin-left: clamp(22px, 8vw, 70px); }
+
+      .intro {
+        margin: 36px 0 0 clamp(22px, 8vw, 70px);
+        width: min(75%, 390px);
+      }
+
+      .brand-panel {
+        width: min(78vw, 440px);
+        margin-top: 50px;
+        padding: 36px 32px;
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page { min-height: 100svh; }
+      .topbar-index { display: none; }
+      .topbar { justify-content: flex-end; }
+      main { padding-top: 38px; }
+      .eyebrow { margin-bottom: 28px; }
+      .intro { width: 90%; font-size: 12px; }
+      .brand-panel {
+        width: 82vw;
+        margin-top: 42px;
+        padding: 30px 26px;
+      }
+      .coordinates span:last-child { display: none; }
+      .footer { gap: 10px; font-size: 8px; letter-spacing: .18em; }
+    }
+
+    @media (max-width: 360px) {
+      .footer { gap: 6px; font-size: 7px; letter-spacing: .14em; }
+      .footer-mark { flex-basis: 46px; width: 46px; transform: scale(.86); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page" id="page">
+    <header class="topbar">
+      <span class="topbar-index">We turn the odds in your favor</span>
+      <span class="status"><i class="status-dot" aria-hidden="true"></i> In progress</span>
+    </header>
+
+    <main>
+      <section class="content" aria-labelledby="coming-soon-title">
+        <p class="eyebrow">Odd ideas. Wise outcomes.</p>
+        <h1 id="coming-soon-title">
+          <span>COMING</span>
+          <span>SOON</span>
+        </h1>
+        <p class="intro">Bold thinking changes the equation. We create the advantage that moves you forward.</p>
+      </section>
+
+      <aside class="brand-panel" aria-label="ODDWISE">
+        <div class="logo-crop">
+          <img src="assets/oddwise-logo.jpeg" alt="ODDWISE logo">
+        </div>
+        <div class="coordinates" aria-hidden="true">
+          <span>Est. 2026</span>
+          <span>Think / Shape / Shift</span>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="footer">
+      <span class="footer-word">Site under construction</span>
+      <span class="footer-mark" aria-hidden="true">
+        <span class="mark-state mark-state--dot"></span>
+        <span class="mark-state mark-state--o">
+          <i class="mark-glyph mark-glyph--o"></i>
+        </span>
+        <span class="mark-state mark-state--d">
+          <i class="mark-glyph mark-glyph--d"></i>
+        </span>
+        <span class="mark-state mark-state--odd">
+          <i class="mark-glyph mark-glyph--o"></i>
+          <i class="mark-glyph mark-glyph--d"></i>
+          <i class="mark-glyph mark-glyph--d"></i>
+        </span>
+      </span>
+      <span>© <span id="year">2026</span> ODDWISE</span>
+    </footer>
+  </div>
+
+  <script>
+    const page = document.getElementById('page');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+      window.addEventListener('pointermove', (event) => {
+        const x = event.clientX / window.innerWidth - 0.5;
+        const y = event.clientY / window.innerHeight - 0.5;
+        page.style.setProperty('--orb-x', `${x * 22}px`);
+        page.style.setProperty('--orb-y', `${y * 22}px`);
+      }, { passive: true });
+    }
+  </script>
+</body>
+</html>
